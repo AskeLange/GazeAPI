@@ -1,0 +1,25 @@
+{
+  "name": "thesedays",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "inspect": "node --inspect server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AskeLange/TheseDays.git"
+  },
+  "author": "Aske K. Lange",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AskeLange/TheseDays/issues"
+  },
+  "homepage": "https://github.com/AskeLange/TheseDays#readme",
+  "devDependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.0"
+  }
+}
