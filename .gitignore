@@ -1,3 +1,7 @@
+
+# CONFIG FILE
+/config.js
+
 # Logs
 logs
 *.log
