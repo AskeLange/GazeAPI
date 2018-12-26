@@ -6,10 +6,8 @@ const Story = require ('../models/story.model');
 // Insert Story
 exports.insert_story = ((req,res) => {
 
-  // Aliases
-  let b = req.body;
-
   // Creates the document
+  let b = req.body;
   let document = new Story ({
   
     label: b.label,
@@ -22,25 +20,45 @@ exports.insert_story = ((req,res) => {
   });
 
   // Saves the document
-  document.save ((err) => {
-    if (err) { res.status (500); res.send (err); }
-    res.send ('Story "'+b.label+'" were successfully created');
+  document.save ((err,r) => {
+    if (err) { res.status (500); res.send (err); return; }
+    res.send (r);
   });
 
 });
 
 // Get Story
 exports.get_story = ((req,res) => {
-  Story.findById (req.params.id, (err,response) => {
-    if (err) { res.status (500); res.send (err); }
-    res.send (response);
+  Story.findOne ({ _id: req.params.id}, (err,r) => {
+    if (err) { res.status (500); res.send (err); return; }
+    res.send (r);
   })
+});
+
+// Update Story
+exports.update_story = ((req,res) => {
+
+  // Accepts n' formats data
+  let r = req.body, setters = { };
+  if (r.label) setters.label = r.label;
+  if (r.description) setters.description = r.description;
+  if (r.priority) setters.priority = parseInt (r.priority);
+  if (r.user_role) setters.user_role = r.user_role;
+  if (r.user_desire) setters.user_desire = r.user_desire;
+  if (r.user_rationale) setters.user_rationale = r.user_rationale;
+
+  // Does the actual updating
+  Story.findOneAndUpdate ({ _id: req.params.id }, { $set: setters }, (err,r) =>  {
+    if (err) { res.status (500); res.send (err); return; }
+    res.send (r);
+  });
+
 });
 
 // Delete Story
 exports.delete_story = ((req,res) => {
-  Story.findById (req.params.id) .remove() .then ((err) => {
-    if (err) { res.status (500); res.send (err); }
-    res.send ('Story '+req.params.id+' were successfully deleted');
+  Story.findByIdAndDelete ({ _id: req.params.id }, (err,r) => {
+    if (err) { res.status (500); res.send (err); return; }
+    res.send (r);
   });
 });

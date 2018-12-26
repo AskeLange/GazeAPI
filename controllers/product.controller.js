@@ -3,60 +3,55 @@
 // Imports
 const Product = require ('../models/product.model');
 
-// #region Product
-
 // Create Product
 exports.insert_product = ((req,res) => {
 
   // Creates the document
+  let b = req.body;
   let document = new Product ({
-    label: req.body.label,
-    team: req.body.team,
+    label: b.label,
+    team: b.team,
     stories: [],
     sprints: []
   });
 
   // Saves the document
-  document.save (err => {
-    if (err) { res.status (500); res.send (err); }
-    res.send ('Product "'+req.body.label+'" were successfully created');
+  document.save ((err, r) => {
+    if (err) { res.status (500); res.send (err); return; }
+    res.send (r);
   });
 
 });
  
 // Get Product
 exports.get_product = ((req,res) => {
-  Product.findById (req.params.id, (err, response) => {
-    if (err) { res.status (500); res.send (err); }
-    res.send (response); 
-  });
-});
-
-// Delete Product
-exports.delete_product = ((req,res) => {
-  Product.findById (req.params.id) .remove() .then ((err) => {
-    if (err) { res.status (500); res.send (err); }
-    res.send ('Product '+req.params.id+' were successfully deleted');
+  Product.findOne ({ _id: req.params.id }, (err, r) => {
+    if (err) { res.status (500); res.send (err); return; } 
+    res.send (r);
   });
 });
 
 // Update Product
 exports.update_product = ((req,res) => {
-  Product.findByIdAndUpdate (req.params.id, { $set: req.body }, (err) => {
-    if (err) { res.status (500); res.send (err); }
-    res.send ('Product '+req.params.id+' were successfully updated');
+
+  // Accepts n' formats data
+  let r = req.body, setters = { };
+  if (r.label) setters.label = r.label;
+  if (r.stories) setters.stories = JSON.parse (r.stories);
+  if (r.sprints) setters.sprints = JSON.parse (r.sprints);
+
+  // Does the actual updating
+  Product.findOneAndUpdate ({ _id: req.params.id }, { $set: setters }, (err,r) =>  {
+    if (err) { res.status (500); res.send (err); return; }
+    res.send (r);
   });
+
 });
 
-// #endregion
-
-// #region Sprint
-
-exports.insert_sprint = ((req,res) => {
-  Product.findByIdAndUpdate (req.params.id, {  }, (err,resp) => {
-    if (err) { res.status (500); res.send (err); }
-    res.send (resp);
+// Delete Product
+exports.delete_product = ((req,res) => {
+  Product.findOneAndDelete ({ _id: req.params.id }, (err, r) => {
+    if (err) { res.status (500); res.send (err); return; } 
+    res.send (r);
   });
 });
-
-// #endregion

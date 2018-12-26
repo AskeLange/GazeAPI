@@ -18,7 +18,9 @@
   },
   "homepage": "https://github.com/AskeLange/TheseDays#readme",
   "devDependencies": {
+    "base64url": "^3.0.1",
     "body-parser": "^1.18.3",
+    "crypto-js": "^3.1.9-1",
     "express": "^4.16.4",
     "mongoose": "^5.4.0"
   }
