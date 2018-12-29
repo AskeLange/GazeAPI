@@ -12,6 +12,7 @@ const router = express.Router ();
 router.post ('/', user_controller.insert_user);
 router.get ('/token', user_controller.fetch_token);
 router.get ('/:id', user_controller.get_user);
+router.delete ('/:id', user_controller.delete_user);
 
 // Exports
 module.exports = router;

@@ -3,10 +3,10 @@
 // Imports
 const Crypto = require ('crypto-js');
 const Config = require ('../config');
-const Token = require ('../authentication/token');
+const Token = require ('../tools/token');
 const User = require ('../models/user.model');
 
-const authenticate = require ('../authentication/authenticate').authenticate;
+const authenticate = require ('../tools/authenticate').authenticate;
 
 // Create User
 exports.insert_user = ((req,res) => {
@@ -38,12 +38,44 @@ exports.insert_user = ((req,res) => {
 exports.get_user = ((req,res) => {
   
   // Authentication
-  authenticate (req, res, {
-    type: 'user'
-  });
+  let uid = authenticate (
+    req, res, { type: 'user' }
+  ); 
+  
+  // Errors
+  if (!uid) return;
+  if (uid !== req.params.id) {
+    res.status (401);
+    res.send ('Unauthorized');
+    return;
+  }
 
   // Finds n' sends the use
-  User.findOne ({ _id:uid }, (err,r) => {
+  User.findOne ({ _id: req.params.id }, (err,r) => {
+    if (err) { res.status (500); res.send (err); return; }
+    res.send (r);
+  });
+
+});
+
+// Delete User
+exports.delete_user = ((req,res) => {
+  
+  // Authentication
+  let uid = authenticate (
+    req, res, { type: 'user' }
+  ); 
+  
+  // Errors
+  if (!uid) return;
+  if (uid !== req.params.id) {
+    res.status (401);
+    res.send ('Unauthorized');
+    return;
+  }
+
+  // Finds n' sends the use
+  User.findOneAndDelete ({ _id: req.params.id }, (err,r) => {
     if (err) { res.status (500); res.send (err); return; }
     res.send (r);
   });
