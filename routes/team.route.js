@@ -11,7 +11,7 @@ const router = express.Router ();
 // Main routes
 router.post ('/', team_controller.insert_team);
 router.get ('/:id', team_controller.get_team);
-router.put ('/:id', team_controller.update_team)
+router.patch ('/:id', team_controller.update_team)
 router.delete ('/:id', team_controller.delete_team);
 
 // Exports

@@ -11,7 +11,7 @@ const router = express.Router ();
 // Main routes
 router.post ('/', story_controller.insert_story);
 router.get ('/:id', story_controller.get_story);
-router.put ('/:id', story_controller.update_story);
+router.patch ('/:id', story_controller.update_story);
 router.delete ('/:id', story_controller.delete_story);
 
 // Exports

@@ -58,6 +58,35 @@ exports.get_user = ((req,res) => {
 
 });
 
+// Update User
+exports.update_user = ((req,res) => {
+
+  // Authentication
+  let uid = authenticate (
+    req, res, { type: 'user' }
+  ); 
+  
+  // Errors
+  if (!uid) return;
+  if (uid !== req.params.id) {
+    res.status (401);
+    res.send ('Unauthorized');
+    return;
+  }
+
+  // Extracts data
+  let b = req.body, setters = { };
+  if (b.mail) setters.mail = b.mail;
+  if (b.password) setters.password = Crypto.HmacSHA256 (b.password, Config.pass_secret);
+
+  // Updates the user
+  User.findByIdAndUpdate ({ _id:req.params.id }, setters, (err,r) => {
+    if (err) { res.status (500); res.send (err); return; }
+    res.send (r);
+  });
+
+});
+
 // Delete User
 exports.delete_user = ((req,res) => {
   
@@ -84,14 +113,14 @@ exports.delete_user = ((req,res) => {
 
 // Fetch Token
 exports.fetch_token = ((req,res) => {
-  User.findOne ({ username: req.body.username }, (err,r) => {
+  User.findOne ({ username: req.query.username }, (err,r) => {
 
     // Errors n' user not found
     if (err) { res.status (500); res.send (err); return; }
     if (!r) { res.status (401); res.send ('User not found'); return; }
 
     // Checks pass n' sends response
-    let password = Crypto.HmacSHA256 (req.body.password, Config.pass_secret);
+    let password = Crypto.HmacSHA256 (req.query.password, Config.pass_secret);
     if (r.password == password) { res.send ({ token: Token.generate (r._id), uid: r._id }); }
     else { res.status (401); res.send ('Wrong password'); }
 

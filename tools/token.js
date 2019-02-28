@@ -21,7 +21,7 @@ let generate_signature = ((header_str,payload_str) => {
 // #region Publics
 
 // Get Payload
-exports.get_payload = ( token => {
+exports.get_payload = (( token='' ) => {
 
   let parts = token.split ('.');
   return Base64URL.decode (parts[1]);
@@ -29,7 +29,7 @@ exports.get_payload = ( token => {
 });
 
 // Validate JWT token
-exports.validate = ( token => {
+exports.validate = (( token='' ) => {
 
   // Extracts data
   let parts = token.split ('.');

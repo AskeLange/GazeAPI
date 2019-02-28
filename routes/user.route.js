@@ -8,11 +8,15 @@ const user_controller = require ('../controllers/user.controller');
 const router = express.Router ();
 
 // Route registration
+// Authentication (Token)
+router.get ('/token', user_controller.fetch_token);
+
 // Main routes
 router.post ('/', user_controller.insert_user);
-router.get ('/token', user_controller.fetch_token);
 router.get ('/:id', user_controller.get_user);
+router.patch ('/:id', user_controller.update_user);
 router.delete ('/:id', user_controller.delete_user);
+
 
 // Exports
 module.exports = router;

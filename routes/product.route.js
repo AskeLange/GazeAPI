@@ -11,7 +11,7 @@ const router = express.Router ();
 // Main routes
 router.post ('/', product_controller.insert_product);
 router.get ('/:id', product_controller.get_product);
-router.put ('/:id', product_controller.update_product);
+router.patch ('/:id', product_controller.update_product);
 router.delete ('/:id', product_controller.delete_product);
 
 // Exports
