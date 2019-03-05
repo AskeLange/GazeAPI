@@ -38,16 +38,14 @@ exports.insert_user = ((req,res) => {
 exports.get_user = ((req,res) => {
   
   // Authentication
-  let uid = authenticate (
+  let uid;
+  if (( uid = authenticate (
     req, res, { type: 'user' }
-  ); 
-  
-  // Errors
-  if (!uid) return;
+  ), !uid )) return;
+
+  // TODO: tmp solution
   if (uid !== req.params.id) {
-    res.status (401);
-    res.send ('Unauthorized');
-    return;
+    res.status (401); res.send ('Unauthorized'); return;
   }
 
   // Finds n' sends the use
@@ -62,12 +60,12 @@ exports.get_user = ((req,res) => {
 exports.update_user = ((req,res) => {
 
   // Authentication
-  let uid = authenticate (
+  let uid;
+  if (( uid = authenticate (
     req, res, { type: 'user' }
-  ); 
-  
-  // Errors
-  if (!uid) return;
+  ), !uid )) return;
+
+  // TODO: tmp solution
   if (uid !== req.params.id) {
     res.status (401);
     res.send ('Unauthorized');
@@ -91,12 +89,12 @@ exports.update_user = ((req,res) => {
 exports.delete_user = ((req,res) => {
   
   // Authentication
-  let uid = authenticate (
+  let uid;
+  if (( uid = authenticate (
     req, res, { type: 'user' }
-  ); 
-  
-  // Errors
-  if (!uid) return;
+  ), !uid )) return;
+
+  // TODO: tmp solution
   if (uid !== req.params.id) {
     res.status (401);
     res.send ('Unauthorized');
