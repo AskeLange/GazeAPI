@@ -9,9 +9,12 @@ exports.insert_team = ((req,res) => {
   // Creates the document
   let b = req.body;
   let document = new Product ({
+    
     label : b.label,
     users : JSON.parse (b.users),
-    products : []
+    roles : b.roles ? b.roles : [ ],
+    products : [] 
+
   });
 
   // Saves the document
