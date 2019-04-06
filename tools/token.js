@@ -47,7 +47,7 @@ exports.validate = ((token='',secret='') => {
 });
 
 // Generate JWT token
-exports.generate_user_token = ( user_id  => {
+exports.generate_user_token = (( user_id ) => {
   
   // Creates header n' payload
   let exp = (new Date()).getTime() + 1000*60*60*48;
@@ -57,7 +57,7 @@ exports.generate_user_token = ( user_id  => {
   // Base 64 encodes the objects n' creates signature
   let header_str = Base64URL.encode (JSON.stringify (header_obj));
   let payload_str = Base64URL.encode (JSON.stringify (payload_obj));
-  let signature_str = generate_signature (header_str,payload_str);
+  let signature_str = generate_signature (header_str,payload_str, Config.user_secret);
 
   // Returns token
   return header_str+'.'+payload_str+'.'+signature_str;

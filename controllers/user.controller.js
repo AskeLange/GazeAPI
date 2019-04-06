@@ -119,7 +119,7 @@ exports.fetch_token = ((req,res) => {
 
     // Checks pass n' sends response
     let password = Crypto.HmacSHA256 (req.query.password, Config.pass_secret);
-    if (r.password == password) { res.send ({ token: Token.generate (r._id), uid: r._id }); }
+    if (r.password == password) { res.send ({ token: Token.generate_user_token (r._id), uid: r._id }); }
     else { res.status (401); res.send ('Wrong password'); }
 
   });
