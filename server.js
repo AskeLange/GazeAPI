@@ -25,6 +25,14 @@ mongoose.connection.on ('error', console.error.bind(console, 'MongoDB error:'));
 server.use (parser.json ());
 server.use (parser.urlencoded ({ extended: false }));
 
+// CORS middleware
+server.use (( req, res, next ) => {
+  res.header ( 'Access-Control-Allow-Origin', '*' );
+  res.header ( 'Access-Control-Allow-Methods', 'GET,PUT,POST,OPTIONS,DELETE' );
+  res.header ( 'Access-Control-Allow-Headers', 'Content-Type, X-Auth-Token, Accept' ); 
+  next ();
+});
+
 // Registers routes n' starts the server
 server.use ( '/products', product_route );
 server.use ( '/sprints', sprint_route );
